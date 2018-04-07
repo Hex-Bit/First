@@ -1,0 +1,422 @@
+     
+    ; You may customize this and other start-up templates; 
+    ; The location of this template is c:\emu8086\inc\0_com_template.txt
+     
+    org 100h
+    .model large
+    .stack 100h
+    .data
+     
+    m1 db "                          CALCULATOR$" 
+    M2 DB "CHOOSE AN OPTION TO PERFORM : $" 
+    R DB "                      YOUR RESULT IS = $"
+    ER DB "PLEASE ENTER A VALID OPTION : $"
+     
+    NUM1 DB "       ENTER THE 1ST NUMBER : $"
+    NUM2 DB "       ENTER THE 2ND NUMBER : $" 
+     
+                                    
+    OP1 DB "                        1 FOR ADDITION$" 
+    OP2 DB "                        2 FOR SUBTRACTION$"
+    OP3 DB "                        3 FOR MULTIPLICATION$"
+    OP4 DB "                        4 FOR DIVISION $"
+    RE DB "                      REMAINDER = $"
+     
+    CONT DB "                       1 FOR CONTINUE $ " 
+    EXT DB "                       0 FOR EXIT  $"
+     
+    THANK DB "              THANK YOU$"
+     
+    PR DB " YOU PRESSED : $"
+                                    
+    .code
+    main proc                   
+        MOV AX,@DATA
+        MOV DS,AX
+        
+        LEA DX,M1
+        MOV AH,9
+        INT 21H
+        
+        
+        CALC1:
+        
+        CALL NLINE
+        CALL NLINE
+         
+         
+         
+         CALL OPTION
+        
+        CALL NLINE
+        LEA DX,M2
+        MOV AH,9
+        INT 21H 
+        
+        
+        
+        CALC: ;START CALC LEVEL
+        
+        
+                           ;
+        MOV AH,1           ;
+        INT 21H            ;
+        MOV BH,AL          ;
+                           ;
+                           ;
+                           ;
+        CMP BH,'1'         ;
+        JE ADDITION        ;
+                           ;
+                           ;
+                           ;
+        CMP BH,'2'         ;    ;OPTION CHOOSER
+        JE SUBTRACTION     ;
+                           ;
+                           ;
+                           ;
+        CMP BH,'3'         ;
+        JE MULTIPLICATION  ;
+                           ;
+                           ;
+        CMP BH,'4'         ;
+        JE DIVISION        ;
+                           ;
+        CALL NLINE         ;
+        CALL NLINE         ;
+        LEA DX,ER          ;
+        MOV AH,9           ;
+        INT 21H            ;
+                           ;
+        JMP CALC           ;
+                           ;
+                           ;
+        
+         
+        
+                      
+                              ;END CALC LEVEL  
+                              
+                              
+        
+        
+        ADDITION:   ;
+                    ;
+                    ;
+        CALL NLINE  ;
+        LEA DX,NUM1 ;
+        MOV AH,9    ;
+        INT 21H     ;
+                    ;
+        CALL FUNC   ;
+                    ;       ADDITION
+                    ;
+        CALL NLINE  ;
+        LEA DX,R    ;
+        MOV AH,9    ;
+        INT 21H     ;
+                    ;
+                    ;
+        ADD BL,BH   ;
+        MOV AL,BL   ;
+        SUB AL, 48  ;
+        MOV AH,2    ;
+        MOV DL,AL   ;
+        INT 21H     ;        ;END ADDITION
+                    ;
+                    ;
+         CALL FUNC2 ;
+        
+        
+        
+        
+        
+        
+        SUBTRACTION: ;
+                     ;
+        CALL NLINE   ;
+        CALL NLINE   ;
+        LEA DX,NUM1  ;
+        MOV AH,9     ;
+        INT 21H      ;
+                     ;
+        CALL FUNC    ;
+                     ;
+        CALL NLINE   ;          SUBTRACTION
+        CALL NLINE   ;
+        LEA DX,R     ;
+        MOV AH,9     ;
+        INT 21H      ;
+                     ;
+                     ;
+        SUB BL,BH    ;
+        MOV AL,BL    ;
+        ADD AL, 48   ;
+        MOV AH,2     ;
+        MOV DL,AL    ;
+        INT 21H      ;     ;END SUBTRACTION
+                     ;
+                     ;
+        CALL FUNC2   ;
+                     ;
+                     ;
+                     ;
+        
+        DIVISION:             ;DIVISION
+        
+        
+        MOV AX,0         ;
+        MOV BX,0         ;
+        MOV CX,0         ;
+        MOV DX,0         ;
+                         ;
+        CALL NLINE       ;
+        LEA DX,NUM1      ;
+        MOV AH,9         ;
+        INT 21H          ;
+                         ;
+        MOV AH,1         ;
+        INT 21H          ;
+        SUB AL,48        ;
+        MOV CL,AL        ;
+                         ;
+                         ;
+                         ;
+                         ;
+        CALL NLINE       ;
+        LEA DX,NUM2      ;
+        MOV AH,9         ;
+        INT 21H          ;
+                         ;
+                         ;
+        MOV AH,1         ;
+        INT 21H          ;
+        SUB AL,48        ;
+        MOV BL,AL        ;            ;DIVISION
+                         ;
+                         ;
+        CALL NLINE       ;
+        LEA DX,R         ;
+        MOV AH,9         ;
+        INT 21H          ;
+                         ;
+                         ;
+                         ;
+        MOV AX,CX        ;
+        DIV BL           ;
+        MOV CX,AX        ;
+        ADD CL,48        ;
+                         ;
+                         ;
+        MOV AH,2         ;
+        MOV DL,CL        ;
+        INT 21H          ;
+                         ;
+                         ;
+        ADD CH,48        ;
+                         ;
+        CMP CH,0         ;
+                         ;
+        JE REM           ;
+                         ;
+                         ;
+        REM:             ;
+         CALL NLINE      ;
+         LEA DX,RE       ;
+        MOV AH,9         ;
+        INT 21H          ;
+                         ;
+         MOV AH,2        ;
+        MOV DL,CH        ;
+        INT 21H
+        
+                                         ;END DIVISION
+        
+        
+        
+        CALL FUNC2
+     
+        
+        MULTIPLICATION:       ;multipliation
+        
+        
+        CALL NLINE
+                       ;
+                       ;
+        MOV AX,0       ;
+        MOV BX,0       ;
+        MOV CX,0       ;
+        MOV DX,0       ;
+                       ;
+                       ;
+                       ;
+        CALL NLINE     ;
+        LEA DX,NUM1    ;
+        MOV AH,9       ;
+        INT 21H        ;
+                       ;
+        MOV AH,1       ;
+        INT 21H        ;
+        SUB AL,48      ;
+        MOV CL,AL      ;
+        MOV AH,0       ;
+                       ;
+                       ;
+                       ;
+        CALL NLINE     ;          ;multipliation
+        LEA DX,NUM2    ;
+        MOV AH,9       ;
+        INT 21H        ;
+                       ;
+        MOV AH,1       ;
+        INT 21H        ;
+        SUB AL,48      ;
+        MOV BL,AL      ;
+        MOV BH,0       ;
+                       ;
+                       ;
+         MOV AX,CX     ;
+                       ;
+         MUL BX        ;
+         MOV CX,AX     ;
+         ADD CL,48     ;
+                       ;
+         CALL NLINE    ;
+         LEA DX,R      ;
+         MOV AH,9      ;
+         INT 21H       ;
+                       ;
+                       ;
+         MOV AH,2      ;
+         MOV DL,CL     ;
+         INT 21H       ;            ;END MULTIPLICATION 
+         
+       
+          CALL FUNC2
+        
+        
+        
+        NLINE:
+        
+        MOV AH,2
+        MOV DL,0AH
+        INT 21H
+        MOV DL,0DH
+        INT 21H
+        RET
+        
+        
+        FUNC:       ;
+                    ;
+        MOV AX,0    ;
+        MOV BX,0    ;
+        MOV CX,0    ;
+        MOV DX,0    ;
+                    ;
+        MOV AH,1    ;        INPUT
+        INT 21H     ;
+        MOV BL,AL   ;
+                    ;
+        CALL NLINE  ;
+        LEA DX,NUM2 ;
+        MOV AH,9    ;
+        INT 21H     ;
+                    ;
+                    ;
+        MOV AH,1    ;
+        INT 21H     ;
+        MOV BH,AL   ;
+        RET         ;
+        
+        
+         
+         
+         
+         FUNC2:      ;
+                     ;
+                     ;
+        CALL NLINE   ;
+        CALL NLINE   ;
+        LEA DX,CONT  ;
+        MOV AH,9     ;
+        INT 21H      ;
+                     ;
+        CALL NLINE   ;
+        LEA DX,EXT   ;
+        MOV AH,9     ;
+        INT 21H      ;          CONTINUITY OR  DISCONTINUITY
+                     ;
+        CALL NLINE   ;
+        CALL NLINE   ;
+        LEA DX,PR    ;
+        MOV AH,9     ;
+        INT 21H      ;
+                     ;
+                     ;
+        MOV AH,1     ;
+        INT 21H      ;
+        MOV BH,AL    ;
+                     ;
+        CMP BH,'1'   ;
+        JE CALC1     ;
+                     ;
+                     ;
+        CMP BH,'0'   ;
+        JE EXIT      ;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        OPTION:      ;
+        LEA DX,OP1   ;
+        MOV AH,9     ;
+        INT 21H      ;
+        CALL NLINE   ;
+        LEA DX,OP2   ;
+        MOV AH,9     ;
+        INT 21H      ;      MSG
+        CALL NLINE   ;
+        LEA DX,OP3   ;
+        MOV AH,9     ;
+        INT 21H      ;
+        CALL NLINE   ;
+        LEA DX,OP4   ;
+        MOV AH,9     ;
+        INT 21H      ;
+        CALL NLINE   ;
+                     ;
+                  RET;
+                  
+                  
+      
+         
+        
+        EXIT: 
+        
+        CALL NLINE 
+        CALL NLINE
+        CALL NLINE
+        
+        LEA DX,THANK
+        MOV AH,9
+        INT 21H
+        MOV AH,2
+        MOV DL,01H
+        INT 21H
+        
+        MOV AX,4CH
+        INT 21H
+        MAIN ENDP
+    END MAIN
+        
+     
+     
+     
+     
+     
+     
