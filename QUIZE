@@ -1,0 +1,720 @@
+
+; YOU MAY CUSTOMIZE THIS AND OTHER START-UP TEMPLATES; 
+; THE LOCATION OF THIS TEMPLATE IS C:\EMU8086\INC\0_COM_TEMPLATE.TXT
+
+ORG 100H
+
+; ADD YOUR CODE HERE
+.MODEL LARGE 
+.STACK 100H 
+.DATA
+M1 DB "                       WELCOME TO QUIZE GAME$" 
+
+M2 DB "YOU WILL SCORE 1 FOR EACH RIGHT ANSWER.$"
+
+M3 DB "YOU WILL SCORE -1 FOR EACH WRONG ANSWER FROM YOUR TOTAL POINT.$"
+
+M4 DB "PRESS 'ENTER' TO CONTINUE :$"
+
+M5 DB "RIGHT ANSWER....$" 
+
+M6 DB "WRONG ANSWER....$" 
+
+M7 DB "YOU HAVE SUCCESSFULLY COMPLETED YOUR QUIZE $" 
+
+M8 DB 'YOUR TOTAL GAINED POINT IS = $' 
+
+M9 DB "IF YOU WANT TO PLAY THIS GAME ONCE AGAIN PRESS 1 AND O FOR EXIT : $"
+
+ 
+Q1 DB '1)  1+1 = ? $' 
+QA1 DB "      A) 2    B) 1    C)3   $" 
+
+Q2 DB "2)  1+2 = ? $"
+QA2 DB "      A) 1    B) 2    C)3   $" 
+
+Q3 DB "3)  5+3 = ? $"
+QA3 DB "      A) 2    B) 8    C)4   $"
+
+Q4 DB "4)  9+4 = ? $"
+QA4 DB "      A) 1    B) 2    C)13   $"
+
+Q5 DB "5)  1*5 = ? $"
+QA5 DB "      A) 1    B) 5    C)0   $"
+ 
+Q6 DB "6)  6%1 = ? $"
+QA6 DB "      A) 1    B) 3    C)6   $" 
+
+Q7 DB "7)  3+7 = ? $"
+QA7 DB "      A) 10    B) 2    C)8   $"
+
+Q8 DB "8)  1+8 = ? $"
+QA8 DB "      A) 1    B) 2    C)9   $"
+
+Q9 DB "9)  4+1 = ? $"
+QA9 DB "      A) 1    B) 5    C)2   $" 
+
+Q10 DB "10)  4/1 = ? $"
+QA10 DB "      A) 1    B) 2    C)4   $"
+
+
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    
+    LEA DX,M1
+    MOV AH,9
+    INT 21H
+    
+    
+    CALL NEWLINE 
+    CALL NEWLINE 
+    
+    LEA DX,M2
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+     
+    LEA DX,M3
+    MOV AH,9
+    INT 21H
+    
+    
+     CALL NEWLINE
+      
+    
+    START:
+    
+       MOV BL,0 
+    
+    CALL NEWLINE
+    
+    LEA DX,M4
+    MOV AH,9
+    INT 21H
+    
+    
+    MOV AH,1
+    INT 21H
+    
+    CMP AL,0DH
+    
+    JE QSN1
+    JNE START
+    
+    QSN1:
+    
+    CALL NEWLINE
+    LEA DX,Q1
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    
+    LEA DX,QA1
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE 
+    
+    
+    MOV AH,1
+    INT 21H
+    CMP AL,'A'
+    JE QSN2
+    JNE QSNW2
+    
+    
+    QSN2:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN2
+    CALL INPUT
+    CMP AL,'C'
+    JE QSN3
+    JNE  QSNW3
+     
+    
+    QSNW2:
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN2 
+	CALL INPUT
+	
+	CMP AL, 'C'
+	JE QSN3 
+	JNE QSNW3
+    
+    
+    QSN3:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN3
+    CALL INPUT
+    CMP AL,'B'
+    JE QSN4
+    JNE  QSNW4 
+    
+    
+    QSNW3:
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN3 
+	CALL INPUT
+	
+	CMP AL, 'B'
+	JE QSN4 
+	JNE QSNW4
+    
+    QSN4:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN4
+    CALL INPUT
+    CMP AL,'C'
+    JE QSN5
+    JNE  QSNW5 
+    
+    
+    
+	 QSNW4:
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN4
+	CALL INPUT
+	
+	CMP AL, 'C'
+	JE QSN5 
+	JNE QSNW5
+	
+	
+    
+    QSN5:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN5
+    CALL INPUT
+    CMP AL,'B'
+    JE QSN6
+    JNE  QSNW6
+    
+    
+    QSNW5:
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN5
+	CALL INPUT
+	
+	CMP AL, 'B'
+	JE QSN6 
+	JNE QSNW6
+    
+    
+    
+    
+    
+    QSN6:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN6
+    CALL INPUT
+    CMP AL,'C'
+    JE QSN7
+    JNE  QSNW7
+    
+    
+    
+	QSNW6:
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN6 
+	CALL INPUT
+	
+	CMP AL, 'C'
+	JE QSN7 
+	JNE QSNW7
+	
+	
+	
+	
+	
+    
+    QSN7:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN7
+    CALL INPUT
+    
+    CMP AL,'A'
+    JE QSN8
+    JNE  QSNW8
+    
+    
+    QSNW7:
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN7 
+	CALL INPUT
+	
+	CMP AL, 'A'
+	JE QSN8 
+	JNE QSNW8 
+	
+	
+	
+    QSN8:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN8
+    CALL INPUT
+    CMP AL,'C'
+    JE QSN9
+    JNE  QSNW9
+    
+    QSNW8:
+	      CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN8 
+	CALL INPUT
+	
+	CMP AL, 'C'
+	JE QSN9 
+	JNE QSNW9 
+	
+	
+    
+    QSN9:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN9
+    CALL INPUT
+    CMP AL,'B'
+    JE QSN10
+    JNE  QSNW10 
+    
+    
+    
+    
+    QSNW9:
+	
+	
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN9 
+	CALL INPUT
+	
+	CMP AL, 'B'
+	JE QSN10 
+	JNE QSNW10
+    
+    
+    QSN10:
+      CALL NEWLINE
+      LEA DX,M5
+    MOV AH,9
+    INT 21H
+    INC BL
+    
+    CALL NEWLINE
+    
+    CALL QN10
+    CALL INPUT
+    CMP AL,'C'
+    JE LAST
+    JNE  LASTW
+    
+    
+    
+    QSNW10:
+	
+	
+	
+	CALL NEWLINE
+    
+	LEA DX,M6
+	MOV AH,9
+	INT 21H
+	
+	DEC BL
+	CALL NEWLINE
+    
+	CALL QN10 
+	CALL INPUT
+	
+	CMP AL, 'C'
+	JE LAST 
+	JNE LASTW
+    
+    
+    QN2:
+    
+    lea dx,Q2
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA2
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    
+    QN3:
+    
+    lea dx,Q3
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA3
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    
+    QN4:
+    
+    lea dx,Q4
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA4
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    QN5:
+    
+    lea dx,Q5
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA5
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    QN6:
+    
+    lea dx,Q6
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA6
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    QN7:
+    
+    lea dx,Q7
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA7
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    QN8:
+    
+    lea dx,Q8
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA8
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    QN9:
+    
+    lea dx,Q9
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA9
+    MOV AH,9
+    INT 21H
+    RET 
+    
+    
+    
+    QN10:
+    
+    lea dx,Q10
+    MOV AH,9
+    INT 21H
+    
+    CALL NEWLINE
+    
+    lea dx,QA10
+    MOV AH,9
+    INT 21H
+    RET
+    
+    
+    
+    LAST: 
+    
+    CALL NEWLINE
+    
+    lea dx,M5
+    MOV AH,9
+    INT 21H
+    
+    INC BL
+    
+    CALL NEWLINE 
+    
+    CALL NEWLINE 
+    
+    
+    lea dx,M7
+    MOV AH,9
+    INT 21H
+    
+    
+    CALL NEWLINE
+    
+    
+    
+    lea dx,M8
+    MOV AH,9
+    INT 21H
+    
+    
+    ADD BL,48
+    
+    CMP BL,57
+    JG GREAT
+    
+    MOV AH,2
+    MOV DL,BL
+    INT 21H
+    
+    
+    JMP EXIT
+    
+    
+    
+    LASTW: 
+    
+    CALL NEWLINE
+    
+    lea dx,M6
+    MOV AH,9
+    INT 21H
+    
+    DEC BL 
+    
+    CALL NEWLINE
+    CALL NEWLINE
+    
+    lea dx,M7
+    MOV AH,9
+    INT 21H
+    
+    
+    CALL NEWLINE
+    
+     lea dx,M8
+    MOV AH,9
+    INT 21H
+    
+    ADD BL,48
+    MOV AH,2
+    MOV DL,BL
+    INT 21H 
+    
+    JMP EXIT
+     
+    GREAT: 
+          
+          
+     MOV AH,2
+    MOV DL,"1"
+    INT 21H 
+    MOV AH,2
+    MOV DL,"0"
+    INT 21H
+    JMP EXIT
+    
+    
+    
+    
+    
+    
+    INPUT:
+	CALL NEWLINE
+    
+	MOV AH, 1
+	INT 21H
+	RET
+    
+    NEWLINE:
+    
+    
+    MOV AH,2
+    MOV DL,0AH
+    INT 21H
+    MOV DL,0DH
+    INT 21H
+    RET
+    
+
+    
+    
+    
+    EXIT:
+    
+    CALL NEWLINE
+    
+    lea dx,M9
+    MOV AH,9
+    INT 21H
+    
+     
+     MOV AH,1
+     INT 21H
+      CMP AL,'1'
+      JE START
+    
+    MOV AX,4CH
+    INT 21H
+    MAIN ENDP
+END MAIN
+    
+
+
+
+
